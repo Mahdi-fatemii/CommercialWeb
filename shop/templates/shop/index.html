@@ -133,11 +133,14 @@
         var cartString ="";
         cartString += "<h5>your cart</h5>";
         var cartIndex = 1;
-        for (var x in cart){
-            cartString += cartIndex;
-            cartString += document.getElementById("title" + x).innerHTML + "Qty:" + cart[x][0] + "<br>";
-            cartIndex += 1;
+        let cartObject = JSON.parse(localStorage.getItem('cart'))
+
+        for (var item in cart){
+            console.log(cartObject[item][0])
+            console.log(cartObject[item][1])
+            cartString += cartObject[item][1] + " Qty: " + cartObject[item][0]
         }
+
         cartString += '<a href="/checkout"><button class="btn btn-warning" id="checkout">Checkout</button>'
         document.getElementById("cart").setAttribute('data-content', cartString);
         $('[data-toggle="popover"]').popover();
