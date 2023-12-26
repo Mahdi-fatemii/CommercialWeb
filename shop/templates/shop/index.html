@@ -44,7 +44,7 @@
                             <a class="nav-link" style="font-weight: bold; color: indigo" href="#">Features</a>
                         </li>
                         <li class="nav-item">
-                            <button id="cart" style="font-weight: bold; color: indigo ; background-color: lightblue" type="button" class="btn btn-secondary" data-container="body" data-toggle="popover"
+                            <button id="cart" style="font-weight: bold; color: indigo ; background-color: lightblue" data-html="true" type="button" class="btn btn-secondary" data-container="body" data-toggle="popover"
                                     data-placement="bottom" data-content="">
                                 Cart(0)
                             </button>
@@ -81,7 +81,7 @@
                 <div class="card" style="background-color: azure">
                     <img src="{{ product.image }}" class="card-img-top" style="height: 170px; background-color: azure">
                     <div class="card-body">
-                        <div class="card-title">
+                        <div id="title{{ product.id }}" class="card-title">
                             {{ product.title }}
                         </div>
                         <div class="card-text">
@@ -147,9 +147,22 @@
         document.getElementById("cart").innerHTML = "Cart(" + Object.keys(cart).length + ")";
 
     });
-    $(function () {
-  $('[data-toggle="popover"]').popover()
-})
+
+    DisplayCart(cart);
+    function DisplayCart(cart) {
+        var cartString ="";
+        cartString += "<h5>your cart</h5>";
+        var cartIndex = 1;
+        for (var x in cart){
+            cartString += cartIndex;
+            cartString += document.getElementById("title" + x).innerHTML + "Qty:" + cart[x] + "<br>";
+            cartIndex += 1;
+        }
+        cartString += '<a href="/checkout"><button class="btn btn-warning" id="checkout">Checkout</button>'
+        document.getElementById("cart").setAttribute('data-content', cartString);
+        $('[data-toggle="popover"]').popover();
+    }
+
 </script>
 </html>
 
