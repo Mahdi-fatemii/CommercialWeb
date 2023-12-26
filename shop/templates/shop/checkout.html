@@ -14,6 +14,7 @@
             <div class="col-md-12">
                 <form method="POST">
                     {% csrf_token %}
+                    <input type="hidden" id="cart_items" name="cart_items">
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="Name">Name</label>
@@ -71,7 +72,7 @@
             $('#item_list').append(itemString);
 
         }
-
+        $('#cart_items').val(JSON.stringify(cart));
     </script>
 
 {% endblock %}

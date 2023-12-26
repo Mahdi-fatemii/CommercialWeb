@@ -28,7 +28,8 @@ def detail(request, id):
 def checkout(request):
 
     if request.method == "POST":
-        name = request.POST.get('name', "")
+        cart_items = request.POST.get('cart_items', "")
+        name = request.POST.get('Name', "")
         lastname = request.POST.get('LastName', "")
         email = request.POST.get('Email', "")
         address = request.POST.get('Address', "")
@@ -36,7 +37,7 @@ def checkout(request):
         state = request.POST.get('State', "")
         zipcode = request.POST.get('ZipCode', "")
 
-        order = Order(name=name, lastname=lastname, email=email, address=address, city=city, state=state, zipcode=zipcode)
+        order = Order(cart_items=cart_items, name=name, lastname=lastname, email=email, address=address, city=city, state=state, zipcode=zipcode)
         order.save()
 
     return render(request, 'shop/checkout.html')
