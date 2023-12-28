@@ -3,6 +3,20 @@ from django.db import models
 # Create your models here.
 
 
+class User(models.Model):
+
+    def __str__(self):
+        return self.username
+
+    username = models.CharField(max_length=100, unique=True)
+    password = models.TextField()
+    name = models.CharField(max_length=100)
+    lastname = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    address = models.CharField(max_length=500)
+    mobile_number = models.CharField(max_length=11, unique=True)
+
+
 class Product(models.Model):
 
     def __str__(self):
@@ -16,17 +30,37 @@ class Product(models.Model):
     image = models.CharField(max_length=1000, default="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGzq7-nyJRg83b4i_CjXMi9mYUE1wx1XVTxBGp-cLvE-apW9KzaYi2wkVDt_G-v49mF2E&usqp=CAU")
 
 
-class Order(models.Model):
+class Cart(models.Model):
 
-    def __str__(self):
-        return self.email
+    def __int__(self):
+        return self.user_id
 
-    cart_items = models.CharField(max_length=1000)
-    name = models.CharField(max_length=100)
-    lastname = models.CharField(max_length=100)
-    email = models.EmailField()
-    address = models.CharField(max_length=500)
-    city = models.CharField(max_length=100)
-    state = models.CharField(max_length=100)
-    zipcode = models.IntegerField(max_length=10)
-    total = models.CharField(max_length=300)
+    user_id = models.OneToOneField(User, on_delete=models.CASCADE)
+    cart_status = models.CharField(max_length=100, default='Pending')
+
+
+class CartItems(models.Model):
+
+    def __int__(self):
+        return self.cart_id
+
+    product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
+    cart_id = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+
+
+class Payment(models.Model):
+
+    def __int__(self):
+        return self.cart_id
+
+    cart_id = models.OneToOneField(Cart, on_delete=models.CASCADE)
+    payment_status = models.CharField(max_length=100, default='Pending')
+    price = models.FloatField()
+
+
+
+
+
+
+
