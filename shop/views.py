@@ -26,61 +26,28 @@ def detail(request, id):
     return render(request, 'shop/detail.html', {'product_objects': product_objects})
 
 
-def user_sign_up(request):
+def add_to_cart(request, id):
+    user = request.user
+    user_id = user.id
 
-    def check_user(username):
+    def check_cart(user_id):
         try:
-            check = User.objects.get(username=username)
-        except User.DoesNotExist:
+            cart = Cart.objects.get(user_id=user_id)
+        except Cart.DoesNotExist:
             return False
 
-    if request.method == "POST":
-        username = request.GET.get('price')
-        password = request.GET.get('price')
-        name = request.GET.get('price')
-        lastname = request.GET.get('price')
-        email = request.GET.get('price')
-        address = request.GET.get('price')
-        mobile_number = request.GET.get('price')
+    cart = check_cart(user_id)
+    if cart is False:
+        cart = Cart(user_id=user_id)
+        cart.save()
+    else:
+        cart = Cart.objects.get(user_id=user_id)
+        product = Product.objects.get(id=id)
+        quantity = request.GET.get('')
+        cart_items = CartItems(product_id=product.id, cart_id=cart.id, quantity=quantity)
+        cart_items.save()
 
-        # user_check = User.objects.filter(username=username).first()
-        user_check = check_user(username)
-        if user_check is not False:
-            salt = bcrypt.gensalt(rounds=12)
-            hashed_password = bcrypt.hashpw(password=password, salt=salt)
-
-            user = User(username=username, password=hashed_password, name=name, lastname=lastname,
-                        email=email, address=address, mobile_number=mobile_number)
-            user.save()
-        else:
-            return render(request, 'user/signup.html')
-    return render(request, 'user/login.html')
-
-
-# def add_to_cart(request, id):
-
-
-def user_log_in(request):
-
-    def check_user(username):
-        try:
-            check = User.objects.get(username=username)
-        except User.DoesNotExist:
-            return False
-
-    if request.method == "POST":
-        username = request.GET.get('price')
-        password = request.GET.get('price')
-
-        user_check = check_user(username)
-        if user_check is not False:
-
-            user = User.objects.get(username=username)
-            psw_check = bcrypt.checkpw(password, hashed_password=user.password)
-            if psw_check is True:
-                return render(request, 'user/profile.html', {'user': user})
-            else:
-                return render(request, 'user/login.html')
+    return render(request, 'shop/detail.html')
 
 
 def payment(request):

@@ -1,20 +1,6 @@
 from django.db import models
-
+from user.models import User
 # Create your models here.
-
-
-class User(models.Model):
-
-    def __str__(self):
-        return self.username
-
-    username = models.CharField(max_length=100, unique=True)
-    password = models.TextField()
-    name = models.CharField(max_length=100)
-    lastname = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
-    address = models.CharField(max_length=500)
-    mobile_number = models.CharField(max_length=11, unique=True)
 
 
 class Product(models.Model):
@@ -33,7 +19,7 @@ class Product(models.Model):
 class Cart(models.Model):
 
     def __int__(self):
-        return self.user_id
+        return self.cart_status
 
     user_id = models.OneToOneField(User, on_delete=models.CASCADE)
     cart_status = models.CharField(max_length=100, default='Pending')
