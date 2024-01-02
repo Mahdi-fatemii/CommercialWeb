@@ -1,8 +1,10 @@
-from django.shortcuts import render, redirect
+import bcrypt
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User as UserMain
 from django.contrib import messages
-from .models import *
-# from .forms import RegisterForm
+from .models import User
+from django.contrib.auth import authenticate
 
 # Create your views here.
 
@@ -37,38 +39,36 @@ def register(request):
         address = request.POST.get('Address')
         mobile_number = request.POST.get('Mobile_Number')
 
-        user_check = User.objects.filter(username=username).first()
-        if password == repeat_pass:
-            # password_byte = str(password).encode()
-            # salt = bcrypt.gensalt(rounds=12)
-            # hashed_password = bcrypt.hashpw(password=password_byte, salt=salt)
-
-            user = User(username=username, password=password, name=name, lastname=lastname,
-                        email=email, address=address, mobile_number=mobile_number)
-            user.save()
-        return render(request, 'user/login.html')
-
+        if User.objects.filter(username=username).first():
+            messages.error(request, "This username is Invalid")
+            return render(request, 'user/register.html')
+        else:
+            if password == repeat_pass:
+                password_byte = str(password).encode('utf-8')
+                salt = bcrypt.gensalt()
+                hashed_password = bcrypt.hashpw(password=password_byte, salt=salt)
+                hashed_password1 = hashed_password.decode('utf-8')
+                user = User(username=username, password=hashed_password1, name=name, lastname=lastname,
+                            email=email, address=address, mobile_number=mobile_number)
+                user.save()
+                user_main = UserMain.objects.create_user(username, email, password)
+                user_main.save()
+            return render(request, 'user/login.html')
     return render(request, 'user/register.html')
 
 
 def user_log_in(request):
 
-    def check_user(username):
-        try:
-            check = User.objects.get(username=username)
-        except User.DoesNotExist:
-            return False
-
     if request.method == "POST":
         username = request.GET.get('Username')
         password = request.GET.get('Password')
-
-        user_check = check_user(username)
-        if user_check is not False:
-
+        main_user = authenticate(username=username, password=password)
+        if main_user is not None:
             user = User.objects.get(username=username)
-            psw_check = bcrypt.checkpw(password, hashed_password=user.password)
-            if psw_check is True:
-                return render(request, 'user/profile.html', {'user': user})
-
+            return render(request, 'user/profile.html', {'user': user})
+        else:
+            messages.error(request, "Wrong username or password")
+            return render(request, 'user/login.html')
     return render(request, 'user/login.html')
+
+

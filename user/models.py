@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User as Use
+from django.contrib.auth.models import User as UserMain
 from django.contrib.auth.validators import *
 from django.utils import timezone
 from django.contrib.auth import hashers
@@ -9,6 +9,10 @@ import bcrypt
 
 
 class User(models.Model):
+
+    def __str__(self):
+        return self.username
+
     username = models.CharField(max_length=100, unique=True)
     password = models.CharField(max_length=2000)
     name = models.CharField(max_length=100, blank=True)
