@@ -25,12 +25,12 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('<int:id>/', views.detail, name='detail'),
     path('<int:id>', views.add_to_cart, name='add_to_cart'),
-    path('login/', user_views.user_log_in, name='user_log_in'),
-    # path('signup/', views.user_sign_up, name='user_sign_up'),
-    # path('checkout/', views.checkout, name='checkout'),
+    # path('login/', user_views.user_log_in, name='user_log_in'),
+    # # path('signup/', views.user_sign_up, name='user_sign_up'),
+    # # path('checkout/', views.checkout, name='checkout'),
     path('register/', user_views.register, name='register'),
-    # path('login/', authentication_views.LoginView.as_view(template_name='user/login.html'), name='login'),
-    # path('logout', authentication_views.LogoutView.as_view(template_name='user/logout.html'), name='logout'),
+    path('login/', authentication_views.LoginView.as_view(template_name='user/login.html'), name='login'),
+    path('logout/', authentication_views.LogoutView.as_view(template_name='user/logout.html'), name='logout'),
     path('profile/', user_views.profile_page, name='profile'),
 
 ]

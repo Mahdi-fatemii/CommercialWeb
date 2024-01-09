@@ -1,5 +1,5 @@
 from django.db import models
-from user.models import User
+from user.models import CustomUser
 # Create your models here.
 
 
@@ -21,7 +21,7 @@ class Cart(models.Model):
     def __int__(self):
         return self.cart_status
 
-    user_id = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     cart_status = models.CharField(max_length=100, default='Pending')
 
 
