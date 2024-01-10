@@ -2,7 +2,7 @@
 
 {% block body %}
 
-        <div class="container">
+    <div class="container">
         <div class="row">
             <div class="col-md-4 offset-md-4" style="padding: 30px">
                 <div class="card">
@@ -17,10 +17,16 @@
                             {% for field in form %}
                                 <div class="form-group" style="padding: 10px">
                                     {{ field.name }}
+                                    <br>
                                     {{ field }}
                                 </div>
+                                {% if field.errors %}
+                                    <small>{{ field.errors|striptags }}</small>
+                                {% endif %}
                             {% endfor %}
-                            <button class="offset-md-5 text-white" style="background-color: darkslateblue; border-radius: 5px" type="submit">Login</button>
+                            <button class="offset-md-5 text-white"
+                                    style="background-color: darkslateblue; border-radius: 5px" type="submit">Login
+                            </button>
                         </form>
                     </div>
                 </div>

@@ -1,4 +1,13 @@
 {% extends 'shop/base.html' %}
 {% block body %}
-<h1>profile</h1>
+    {% if request.user.is_authenticated %}
+        <form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit">logout</button>
+        </form>
+    {% else %}
+        <a href="{% url 'login' %}" class="btn btn-outline">Login</a>
+        <a href="#" class="btn btn-primary">Join Now</a>
+    {% endif %}
+    <h1>profile</h1>
 {% endblock %}
