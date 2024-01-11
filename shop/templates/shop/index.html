@@ -20,16 +20,15 @@
                         <li class="nav-item">
                             <a class="nav-link" style="font-weight: bold; color: indigo" href="{% url 'profile' %}">Profile</a>
                         </li>
+
                         <li class="nav-item">
-                            <button id="cart" style="font-weight: bold; color: indigo ; background-color: lightblue" data-html="true" type="button" class="btn btn-secondary" data-container="body" data-toggle="popover"
+                            <a href="{% url 'cart' %}" id="cart" style="font-weight: bold; color: indigo ; background-color: lightblue" data-html="true" type="button" class="btn btn-secondary" data-container="body" data-toggle="popover"
                                     data-placement="bottom" data-content="">
-                                Cart(0)
-                            </button>
+                                Cart
+                            </a>
                         </li>
                     </ul>
-                    <span class="navbar-text">
-
-    </span>
+                    <span class="navbar-text"></span>
                 </div>
             </nav>
         </div>
@@ -61,7 +60,6 @@
                         <div id="title{{ product.id }}" class="card-title">{{ product.title }}</div>
                         <div id="price{{ product.id }}" class="card-text">{{ product.price }}</div>
                         <a href="{{ product.id }}/" class="btn btn-warning">details</a>
-{#                        <button id="{{ product.id }}" class="btn atc btn-warning">add to cart</button>#}
 
                     </div>
                 </div>

@@ -26,6 +26,7 @@ class Cart(models.Model):
 
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     cart_status = models.CharField(max_length=100, default='Pending')
+    total_price = models.FloatField()
 
 
 class CartItem(models.Model):

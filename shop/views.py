@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import *
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -50,7 +51,7 @@ def add_to_cart(request, id):
     if user.is_authenticated:
         cart_status = cart_finder(user)
         if cart_status is False:
-            cart = Cart(user=user, cart_status="pending")
+            cart = Cart(user=user, cart_status="pending",  total_price=0)
             cart.save()
         else:
             cart_item = cart_item_finder(id)
@@ -68,12 +69,41 @@ def add_to_cart(request, id):
         return redirect('login')
 
 
+@login_required
+def cart(request):
+    user = request.user
+    if user.is_authenticated:
+        cart_status = cart_finder(user)
+        if cart_status is False:
+            user_cart = Cart(user=user, cart_status="pending", total_price=0)
+            cart.save()
+            return render(request, 'shop/cart.html', {'user_cart': user_cart})
+        else:
+            user_cart = Cart.objects.get(user=user)
+            cart_item = CartItem.objects.filter(cart_id=user_cart)
+            total = 0
+            for item in cart_item:
+                cart_item_price_t = item.quantity * item.product_id.price
+                total += cart_item_price_t
+            user_cart.total_price = total
+            user_cart.save()
+            return render(request, 'shop/cart.html', {'user_cart': user_cart, 'cart_item': cart_item})
+    else:
+        return redirect('login')
+
+
+@login_required
 def payment(request):
-    if request.method == "POST":
-        price = request.GET.get('price')
-        payment_status = request.GET.get('payment_status')
-
-        payment = Payment(payment_status=payment_status, price=price)
-        payment.save()
-
-    return render(request, 'shop/checkout.html')
+    user = request.user
+    if user.is_authenticated:
+        cart_status = cart_finder(user)
+        if cart_status is True:
+            cart = Cart.objects.get(user=user)
+            cart_item = CartItem.objects.filter(cart_id=cart)
+            total = 0
+            for item in cart_item:
+                cart_item_price_t = item.quantity * item.product_id.price
+                total += cart_item_price_t
+            payment = Payment(cart_id=cart, payment_status='pending', price=total)
+            payment.save()
+    # return render(request, 'shop/checkout.html', {'payment': payment})
