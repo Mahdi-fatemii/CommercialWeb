@@ -15,6 +15,9 @@ class Product(models.Model):
     description = models.TextField()
     image = models.CharField(max_length=1000, default="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGzq7-nyJRg83b4i_CjXMi9mYUE1wx1XVTxBGp-cLvE-apW9KzaYi2wkVDt_G-v49mF2E&usqp=CAU")
 
+    class Meta:
+        ordering = ['-id']
+
 
 class Cart(models.Model):
 
@@ -25,10 +28,10 @@ class Cart(models.Model):
     cart_status = models.CharField(max_length=100, default='Pending')
 
 
-class CartItems(models.Model):
+class CartItem(models.Model):
 
     def __int__(self):
-        return self.cart_id
+        return self.cart_id.user.email
 
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
     cart_id = models.ForeignKey(Cart, on_delete=models.CASCADE)
@@ -38,7 +41,7 @@ class CartItems(models.Model):
 class Payment(models.Model):
 
     def __int__(self):
-        return self.cart_id
+        return self.cart_id.user.email
 
     cart_id = models.OneToOneField(Cart, on_delete=models.CASCADE)
     payment_status = models.CharField(max_length=100, default='Pending')

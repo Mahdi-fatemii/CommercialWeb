@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import *
 from django.core.paginator import Paginator
-import bcrypt
+
+
 # Create your views here.
 
 
@@ -14,7 +15,7 @@ def index(request):
         product_objects = product_objects.filter(title__icontains=item_name)
 
     # paginator
-    paginator = Paginator(product_objects, 4)
+    paginator = Paginator(product_objects, 3)
     page = request.GET.get('page')
     product_objects = paginator.get_page(page)
 
@@ -26,32 +27,48 @@ def detail(request, id):
     return render(request, 'shop/detail.html', {'product_objects': product_objects})
 
 
+def cart_finder(user):
+    try:
+        cart = Cart.objects.get(user=user)
+    except Cart.DoesNotExist:
+        return False
+    else:
+        return True
+
+
+def cart_item_finder(id):
+    try:
+        cart = CartItem.objects.get(product_id=id)
+    except CartItem.DoesNotExist:
+        return False
+    else:
+        return True
+
+
 def add_to_cart(request, id):
     user = request.user
-    user_id = user.id
-
-    def check_cart(user_id):
-        try:
-            cart = Cart.objects.get(user_id=user_id)
-        except Cart.DoesNotExist:
-            return False
-
-    cart = check_cart(user_id)
-    if cart is False:
-        cart = Cart(user_id=user_id)
-        cart.save()
+    if user.is_authenticated:
+        cart_status = cart_finder(user)
+        if cart_status is False:
+            cart = Cart(user=user, cart_status="pending")
+            cart.save()
+        else:
+            cart_item = cart_item_finder(id)
+            cart = Cart.objects.get(user=user)
+            product_objects = Product.objects.get(id=id)
+            if cart_item is False:
+                cart_items = CartItem(product_id=product_objects, cart_id=cart, quantity=1)
+                cart_items.save()
+            else:
+                cart_item = CartItem.objects.get(product_id=id)
+                cart_item.quantity += 1
+                cart_item.save()
+            return render(request, 'shop/detail.html', {'product_objects': product_objects})
     else:
-        cart = Cart.objects.get(user_id=user_id)
-        product = Product.objects.get(id=id)
-        quantity = request.GET.get('')
-        cart_items = CartItems(product_id=product.id, cart_id=cart.id, quantity=quantity)
-        cart_items.save()
-
-    return render(request, 'shop/detail.html')
+        return redirect('login')
 
 
 def payment(request):
-
     if request.method == "POST":
         price = request.GET.get('price')
         payment_status = request.GET.get('payment_status')

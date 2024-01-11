@@ -4,7 +4,7 @@ from .models import *
 
 admin.site.register(Product)
 admin.site.register(Cart)
-admin.site.register(CartItems)
+admin.site.register(CartItem)
 admin.site.register(Payment)
 
 
