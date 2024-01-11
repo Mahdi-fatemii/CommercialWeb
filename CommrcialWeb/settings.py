@@ -44,8 +44,8 @@ INSTALLED_APPS = [
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_PORT = 25
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'commercialwebsite278@gmail.com'
-EMAIL_HOST_PASSWORD = 'Test123456'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
 
 AUTH_USER_MODEL = "user.CustomUser"
 
