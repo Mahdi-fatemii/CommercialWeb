@@ -41,6 +41,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_PORT = 25
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'commercialwebsite278@gmail.com'
+EMAIL_HOST_PASSWORD = 'Test123456'
+
 AUTH_USER_MODEL = "user.CustomUser"
 
 LOGIN_URL = 'login'

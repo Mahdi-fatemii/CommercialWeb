@@ -5,6 +5,13 @@ from django.contrib import messages
 from .forms import CustomUserCreationForm
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
+from django.contrib.auth.views import (
+    LogoutView,
+    PasswordResetView,
+    PasswordResetDoneView,
+    PasswordResetConfirmView,
+    PasswordResetCompleteView
+)
 # Create your views here.
 
 
