@@ -17,7 +17,7 @@ class CustomUser(AbstractUser):
     first_name = models.CharField(max_length=100, blank=True)
     last_name = models.CharField(max_length=100, blank=True)
     address = models.CharField(max_length=500)
-    mobile_number = models.CharField(max_length=11, unique=True, default='09*********')
+    mobile_number = models.CharField(max_length=11, unique=True)
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["first_name", "last_name", "address", "mobile_number"]
 

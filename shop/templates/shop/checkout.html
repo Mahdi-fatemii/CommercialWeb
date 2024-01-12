@@ -14,7 +14,6 @@
             <div class="col-md-12">
                 <form method="POST">
                     {% csrf_token %}
-                    <input type="hidden" id="cart_items" name="cart_items">
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="Name">Name</label>
@@ -49,40 +48,45 @@
                             <input type="text" class="form-control" id="ZipCode" name="ZipCode">
                         </div>
                         <div class="form-group col-md-2">
-                            <h4>Amount To Be Paid: ${{ payment }}</h4>
+                            <label for="ZipCode">Discount Code</label>
+                            <input type="text" class="form-control" id="Discount" name="Discount">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <h4>Amount To Be Paid: ${{ payment.price }}</h4>
 
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Place Order</button>
+                    <button href="{% url 'checkout' %}" type="submit" class="btn btn-primary">Checkout</button>
+
                 </form>
             </div>
         </div>
     </div>
 
-{#    <script type="text/javascript">#}
-{#        if (localStorage.getItem('cart') == null) {#}
-{#            var cart = {};#}
-{#        } else {#}
-{#            cart = JSON.parse(localStorage.getItem('cart'));#}
-{#        }#}
-{#        var item;#}
-{#        var itemString;#}
-{#        let total = 0;#}
-{#        for (item in cart) {#}
-{#            let name = cart[item][1];#}
-{#            let quantity = cart[item][0];#}
-{#            let price = cart[item][2];#}
-{#            total = total + cart[item][2];#}
-{##}
-{#            itemString = `<li class="list-group-item">Product Name: ${name}<br><span class="">Price of (${quantity}) </span><span class="">  ${name}: $${price}</span></li>`#}
-{#            $('#item_list').append(itemString);#}
-{#        }#}
-{#        totalPrice = `<li class="list-group-item d-flex justify-content-between align-items-center"><b>Your Total Price:#}
-{#             ${total}</b></li>`#}
-{#        $('#item_list').append(totalPrice);#}
-{#        $('#cart_items').val(JSON.stringify(cart));#}
-{#        $('#totalPrice').val(total);#}
-{#    </script>#}
+    {#    <script type="text/javascript">#}
+    {#        if (localStorage.getItem('cart') == null) {#}
+    {#            var cart = {};#}
+    {#        } else {#}
+    {#            cart = JSON.parse(localStorage.getItem('cart'));#}
+    {#        }#}
+    {#        var item;#}
+    {#        var itemString;#}
+    {#        let total = 0;#}
+    {#        for (item in cart) {#}
+    {#            let name = cart[item][1];#}
+    {#            let quantity = cart[item][0];#}
+    {#            let price = cart[item][2];#}
+    {#            total = total + cart[item][2];#}
+    {##}
+    {#            itemString = `<li class="list-group-item">Product Name: ${name}<br><span class="">Price of (${quantity}) </span><span class="">  ${name}: $${price}</span></li>`#}
+    {#            $('#item_list').append(itemString);#}
+    {#        }#}
+    {#        totalPrice = `<li class="list-group-item d-flex justify-content-between align-items-center"><b>Your Total Price:#}
+    {#             ${total}</b></li>`#}
+    {#        $('#item_list').append(totalPrice);#}
+    {#        $('#cart_items').val(JSON.stringify(cart));#}
+    {#        $('#totalPrice').val(total);#}
+    {#    </script>#}
 
 {% endblock %}
