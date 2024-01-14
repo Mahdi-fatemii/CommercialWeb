@@ -5,6 +5,8 @@ from django.contrib import messages
 from .forms import CustomUserCreationForm
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
+from .models import CustomUser
+
 
 # Create your views here.
 
@@ -35,51 +37,8 @@ class MyLoginView(LoginView):
 
 @login_required
 def profile_page(request):
-    return render(request, 'user/profile.html')
+    user = request.user
+    custom_user = CustomUser.objects.get(email=user.email)
+    return render(request, 'user/profile.html', {'user': user, 'custom_user': custom_user})
 
 
-# def register(request):
-#
-#     if request.method == "POST":
-#         username = request.POST.get('Username')
-#         password = request.POST.get('Password')
-#         repeat_pass = request.POST.get('Repeat_Password')
-#         name = request.POST.get('Name')
-#         lastname = request.POST.get('LastName')
-#         email = request.POST.get('Email')
-#         address = request.POST.get('Address')
-#         mobile_number = request.POST.get('Mobile_Number')
-#
-#         if User.objects.filter(username=username).first():
-#             messages.error(request, "This username is Invalid")
-#             return render(request, 'user/register.html')
-#         else:
-#             if password == repeat_pass:
-#                 password_byte = str(password).encode('utf-8')
-#                 salt = bcrypt.gensalt()
-#                 hashed_password = bcrypt.hashpw(password=password_byte, salt=salt)
-#                 hashed_password1 = hashed_password.decode('utf-8')
-#                 user = User(username=username, password=hashed_password1, name=name, lastname=lastname,
-#                             email=email, address=address, mobile_number=mobile_number)
-#                 user.save()
-#                 user_main = UserMain.objects.create_user(username, email, password)
-#                 user_main.save()
-#             return render(request, 'user/login.html')
-#     return render(request, 'user/register.html')
-
-
-# def user_log_in(request):
-#
-#     if request.method == "POST":
-#         username = request.GET.get('Username')
-#         password = request.GET.get('Password')
-#         main_user = authenticate(username=username, password=password)
-#         if main_user is not None:
-#             user = User.objects.get(username=username)
-#             return render(request, 'user/profile.html', {'user': user})
-#         else:
-#             messages.error(request, "Wrong username or password")
-#             return render(request, 'user/login.html')
-#     return render(request, 'user/login.html')
-#
-#

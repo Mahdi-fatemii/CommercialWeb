@@ -47,9 +47,11 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
 
+
 AUTH_USER_MODEL = "user.CustomUser"
 
 LOGIN_URL = 'login'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -61,7 +61,7 @@ class PaymentInfo(models.Model):
     def __str__(self):
         return self.mobile_number
 
-    payment = models.ForeignKey(Payment, on_delete=models.CASCADE)
+    cart_id = models.ForeignKey(Cart, on_delete=models.CASCADE, blank=True, null=True)
     first_name = models.CharField(max_length=100, null=True)
     last_name = models.CharField(max_length=100, null=True)
     city = models.CharField(max_length=100, null=True)
